@@ -11,7 +11,7 @@
 ## Структура проекта
 
 ```
-homework/
+task4/
 ├── homework_cnn_vs_fc_comparison.py
 ├── homework_cnn_architecture_analysis.py
 ├── homework_custom_layers_experiments.py

@@ -178,9 +178,9 @@ def get_last_save_path(save_folder: str | None) -> str | None:
 
 def train_model_v2(
     model,
-    model_name,
-    train_loader,
-    test_loader,
+    model_name: str,
+    train_loader: torch.utils.data.DataLoader,
+    test_loader: torch.utils.data.DataLoader,
     end_epoch=10,
     lr=0.001,
     patience=5,
@@ -216,7 +216,7 @@ def train_model_v2(
         if "result" in state_dict:
             result.load_state_dict(state_dict["result"])
         if "optimizer" in state_dict:
-            optimizer = optimizer.load_state_dict(state_dict["optimizer"])
+            optimizer.load_state_dict(state_dict["optimizer"])
 
     for epoch in range(start_epoch, end_epoch):
         print(f"Epoch {epoch+1}/{end_epoch}:")
@@ -242,7 +242,7 @@ def train_model_v2(
             save_model(
                 model,
                 os.path.join(save_folder, f"epoch_{epoch + 1}.pt"),
-                result=result,
+                result=result.state_dict(),
                 optimizer=optimizer.state_dict(),
                 epoch=epoch,
             )

@@ -8,3 +8,6 @@ tqdm
 pandas
 numpy
 prettytable
+pillow
+opencv-python
+psutil
