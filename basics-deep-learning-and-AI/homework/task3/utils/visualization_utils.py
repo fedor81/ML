@@ -25,42 +25,42 @@ def plot_training_history(history, save_path=None):
     plt.show()
 
 
-def plot_results(results: dict, save_folder: str = None):
-    """Args:
-    results: словарь вида {
-        "model_name": {
-            "train_losses": list[int],
-            "train_accs": list[int],
-            "test_losses": list[int],
-            "test_accs": list[int],
-            "train_time": list[int],
-        }
-    }"""
+def plot_results(results: dict, save_path=None):
+    """Выводит 4 графика (train/test loss/accuracy) на одном изображении"""
 
-    graphics = ["train_losses", "train_accs", "test_losses", "test_accs"]
+    # Создаем фигуру с 2x2 субплoтами
+    fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(15, 10))
+    fig.suptitle("Training and Validation Metrics", fontsize=16)
 
-    for graphic in graphics:
-        plt.figure(figsize=(12, 6))
+    # Определяем какие графики будем отображать и их расположение
+    metrics = [
+        ("train_losses", "Train Loss", 0, 0),
+        ("train_accs", "Train Accuracy", 0, 1),
+        ("test_losses", "Test Loss", 1, 0),
+        ("test_accs", "Test Accuracy", 1, 1),
+    ]
+
+    for metric, title, row, col in metrics:
+        ax = axes[row][col]
 
         for model_name, result in results.items():
-            plt.plot(
-                result[graphic],
-                label=model_name,
-            )
+            ax.plot(result[metric], label=model_name)
 
-        plt.xlabel("Epoch")
-        plt.ylabel(graphic)
-        plt.title(graphic)
-        plt.legend()
-        plt.grid(True)
-
-        if save_folder:
-            if not os.path.exists(save_folder):
-                os.makedirs(save_folder)
-                print(f"Создан каталог для сохранения графиков: {save_folder}")
-            plt.savefig(f"{save_folder}{graphic}.png")
+        ax.set_title(title)
+        ax.set_xlabel("Epoch")
+        ax.set_ylabel(title)
+        ax.legend()
+        ax.grid(True)
 
     plt.tight_layout()
+
+    if save_path:
+        dir_path = os.path.dirname(save_path)
+        if dir_path and not os.path.exists(save_path):
+            os.makedirs(dir_path, exist_ok=True)
+        plt.savefig(save_path)
+        print(f"Графики сохранены в {save_path}")
+
     plt.show()
 
 

@@ -14,7 +14,6 @@
 
 ```
 homework/
-├── requirements.txt
 ├── homework_model_modification.py
 ├── homework_datasets.py
 ├── homework_experiments.py
