@@ -11,3 +11,4 @@ prettytable
 pillow
 opencv-python
 psutil
+tokenizers
