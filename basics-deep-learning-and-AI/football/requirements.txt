@@ -1,0 +1,10 @@
+kagglehub
+pandas
+matplotlib
+numpy
+torch
+scikit-learn
+tqdm
+prettytable
+emoji
+pyside6

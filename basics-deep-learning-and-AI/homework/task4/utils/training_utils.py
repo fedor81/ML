@@ -181,10 +181,10 @@ def train_model_v2(
     model_name: str,
     train_loader: torch.utils.data.DataLoader,
     test_loader: torch.utils.data.DataLoader,
+    optimizer=None,
     end_epoch=10,
     lr=0.001,
     patience=5,
-    weight_decay=0,
     save_folder=None,
     clean_memory=False,
 ) -> TrainResult:
@@ -199,7 +199,7 @@ def train_model_v2(
     model = model.to(device)
     result = TrainResult(model, model_name)
     criterion = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
+    optimizer = optimizer if optimizer else torch.optim.Adam(model.parameters(), lr=lr)
 
     best_loss = float("inf")
     patience_counter = 0

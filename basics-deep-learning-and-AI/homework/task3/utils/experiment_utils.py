@@ -23,7 +23,14 @@ def save_model(model, path, **kwargs):
 def load_model(model, path) -> dict:
     """Загружает модель"""
     state = torch.load(path)
-    model.load_state_dict(state["model"])
+
+    try:
+        model.load_state_dict(state["model"])
+    except RuntimeError as e:
+        raise RuntimeError(
+            f"Невозможно загрузить модель, возможно сохраненный файл поврежден или не соответствует текущей архитектуре модели: {e}"
+        )
+
     del state["model"]
     print("Состояние загружено из файла: ", path)
     return state
