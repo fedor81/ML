@@ -238,7 +238,7 @@ def collate_fn(batch):
 
 
 def get_train_test_datasets(test_size=0.2, random_state=42):
-    data_frames = load_fill_na(local=use_local)
+    data_frames = load_fill_na()
     results, shootouts, goalscorers, _ = encode_columns(*data_frames)
 
     X = results.drop(columns=["home_score", "away_score", "date"])
@@ -256,7 +256,7 @@ def get_train_test_datasets(test_size=0.2, random_state=42):
 
 
 def get_advanced_datasets(test_size=0.2, seq_length=5, reset_cache=False, random_dates=False):
-    data_frames = load_fill_na(local=use_local)
+    data_frames = load_fill_na()
     results, shootouts, goalscorers, _ = encode_columns(*data_frames)
 
     # Предварительный расчет статистики команд
@@ -298,15 +298,16 @@ def get_advanced_datasets(test_size=0.2, seq_length=5, reset_cache=False, random
     return train_ds, test_ds
 
 
-def get_train_val_test_datasets(val_size=0.2, seq_length=5, reset_cache=False):
+def get_train_val_test_datasets(val_size=0.2, test_count=500, seq_length=5, reset_cache=False):
     """В качестве тестовой выборки используются последние матчи"""
     data_frames = load_fill_na()
     results, shootouts, goalscorers, _ = encode_columns(*data_frames)
 
-    test_count = 500
     results.sort_values("date", ascending=False, inplace=True)
     test_results, results = results[:test_count], results[test_count:]
-    train_results, val_results = train_test_split(results, test_size=val_size, random_state=42)
+    train_results, val_results = train_test_split(
+        results, test_size=val_size, random_state=42
+    )
 
     # Создание датасетов
     cache_dir = os.path.join(ROOT_DIR, "cache")
